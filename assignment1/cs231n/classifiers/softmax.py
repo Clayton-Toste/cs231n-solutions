@@ -1,4 +1,5 @@
 from builtins import range
+from hashlib import sha1
 import numpy as np
 from random import shuffle
 from past.builtins import xrange
@@ -34,7 +35,23 @@ def softmax_loss_naive(W, X, y, reg):
     #############################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    for i in range(X.shape[0]):
+      e = np.dot(X[i], W)
+      e -= np.max(e)
+      e = np.exp(e)
+      e /= np.sum(e)
+
+      loss -= np.log(e[y[i]])
+
+      e[y[i]] -= 1
+
+      dW += np.dot(X[i].reshape(-1, 1), e.reshape(1, -1))
+  
+    loss /= X.shape[0]
+    dW /= X.shape[0]
+
+    loss += reg*np.sum(W*W)
+    dW += 2*reg*W
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -59,7 +76,16 @@ def softmax_loss_vectorized(W, X, y, reg):
     #############################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-    pass
+    e = np.dot(X, W)
+    e -= np.max(e, axis=1, keepdims=True)
+    e = np.exp(e)
+    e /= np.sum(e, axis=1, keepdims=True)
+
+    loss = reg*np.sum(W*W) - np.mean(np.log(e[(np.arange(y.shape[0]), y)])) 
+
+    e[np.arange(X.shape[0]), y] -= 1
+
+    dW = np.dot(X.T, e)/X.shape[0] + 2*reg*W
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 

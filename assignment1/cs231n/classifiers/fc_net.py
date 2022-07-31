@@ -55,7 +55,10 @@ class TwoLayerNet(object):
         ############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        self.params["W1"] = np.random.randn(input_dim, hidden_dim)*weight_scale
+        self.params["b1"] = np.random.randn(1, hidden_dim)*weight_scale
+        self.params["W2"] = np.random.randn(hidden_dim, num_classes)*weight_scale
+        self.params["b2"] = np.random.randn(1, num_classes)*weight_scale
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################
@@ -88,7 +91,7 @@ class TwoLayerNet(object):
         ############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        scores = np.dot(X, self.params["W1"])+self.params.params["b1"]
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################
